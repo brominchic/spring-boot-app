@@ -2,3 +2,9 @@ server:
   port: 9999
   servlet:
     context-path: /example-application
+spring:
+  security:
+    user:
+      name: user
+      password: password
+
