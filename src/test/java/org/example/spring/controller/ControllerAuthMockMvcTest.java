@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.client.RestTemplate;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -43,7 +42,7 @@ public class ControllerAuthMockMvcTest {
 
     @WithMockUser(username = "user", password = "password")
     @Test
-    public void testAuthorizedAccessToUnSecuredEndpoint() throws Exception {
+    public void testAuthorizedAccessToUnsecuredEndpoint() throws Exception {
         mockMvc.perform(get("/unsecured/test"))
                 .andExpect(status().isOk()).andExpect(content().string("unsecured"));
     }
