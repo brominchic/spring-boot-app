@@ -3,8 +3,22 @@ server:
   servlet:
     context-path: /example-application
 spring:
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.yaml
   security:
     user:
       name: user
       password: password
+  datasource:
+    #   driver-class-name:
+    url: jdbc:postgresql://localhost:5555/postgres
+    username: postgres
+    password: postgres
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        ddl-auto: none
+        format_sql: true
 
