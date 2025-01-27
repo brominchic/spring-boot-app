@@ -23,16 +23,16 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(UserDetailsService service) {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(passwordEncoder());
-        provider.setUserDetailsService(service);
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService());
+        provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((auths) -> auths.requestMatchers("/unsecured/**").permitAll().
-                requestMatchers("/secured/**").hasRole("User")).
+        http.authorizeHttpRequests((auths) -> auths.requestMatchers("/unsecured/**").permitAll().anyRequest().authenticated()).
                 httpBasic(Customizer.withDefaults());
         return http.build();
     }
