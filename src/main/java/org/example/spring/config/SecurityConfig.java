@@ -33,7 +33,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((auths) -> auths.requestMatchers("/unsecured/**").permitAll().anyRequest().authenticated()).
+        http.authorizeHttpRequests((auths) -> auths.
+                        requestMatchers("/unsecured/**").
+                        permitAll().
+                        anyRequest().
+                        authenticated()).
                 httpBasic(Customizer.withDefaults());
         return http.build();
     }

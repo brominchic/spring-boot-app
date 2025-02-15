@@ -1,6 +1,6 @@
 package org.example.spring.controller;
 
-import org.example.Main;
+import org.example.Application;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -10,7 +10,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 /**
  * General class for test containers.
  */
-@SpringBootTest(classes = Main.class)
+@SpringBootTest(classes = Application.class)
 @Testcontainers
 @ActiveProfiles("test")
 public class SpringBootApplicationTest {
