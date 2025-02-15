@@ -7,11 +7,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @EnableFeignClients
 public class ControllerAuthFeignTest extends SpringBootApplicationTest {
+    @LocalServerPort
+    private final Integer port = 9999;
     @Autowired
     private AuthorizedClient authorizedClient;
     @Autowired
