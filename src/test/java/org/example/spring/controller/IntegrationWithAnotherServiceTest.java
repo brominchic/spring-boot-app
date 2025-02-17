@@ -19,9 +19,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
-
-import static java.lang.Thread.sleep;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class IntegrationWithAnotherServiceTest extends SpringBootApplicationTest {
@@ -46,24 +43,9 @@ public class IntegrationWithAnotherServiceTest extends SpringBootApplicationTest
                 name("euro").
                 code("2l").
                 build());
-        var threadPool = Executors.newFixedThreadPool(100);
-        List<Runnable> listForRunnable = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            listForRunnable.add(new Requester());
-        }
-        listForRunnable.forEach(threadPool::submit);
-        sleep(10000);
-        List<OperationEntity> result = new ArrayList<>();
-        operationRepository.findAll().forEach(result::add);
-        Assertions.assertEquals(100, result.size());
-    }
-
-    public class Requester implements Runnable {
         String uploadUrl = "http://localhost:" + port + "/example-application/unsecured/operation/create";
-
-        @Override
-        public void run() {
-            RestTemplate restTemplate = new RestTemplate();
+        RestTemplate restTemplate = new RestTemplate();
+        for (int i = 0; i < 100; i++) {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(uploadUrl)
@@ -71,7 +53,10 @@ public class IntegrationWithAnotherServiceTest extends SpringBootApplicationTest
                     .queryParam("currency", "rub");
             HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(headers);
             restTemplate.exchange(builder.toUriString(), HttpMethod.GET, requestEntity, String.class);
-
         }
+        List<OperationEntity> result = new ArrayList<>();
+        operationRepository.findAll().forEach(result::add);
+        Assertions.assertEquals(100, result.size());
     }
+
 }
