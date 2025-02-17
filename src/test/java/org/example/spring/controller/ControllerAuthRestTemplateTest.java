@@ -9,14 +9,12 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootTest
-
 public class ControllerAuthRestTemplateTest {
     private static RestTemplate restTemplate;
 
     @BeforeAll
     public static void setup() {
         restTemplate = new RestTemplate();
-
     }
 
     @Test
@@ -28,11 +26,11 @@ public class ControllerAuthRestTemplateTest {
 
     @Test
     public void testAuthorizedAccessToUnsecuredEndpoint() {
-        String url = "http://localhost:9999/example-application/secured/test";
+        String url = "http://localhost:9999/example-application/unsecured/test";
         HttpHeaders headers = new HttpHeaders();
-        headers.setBasicAuth("user", "password");
+        headers.setBasicAuth("brom", "password");
         HttpEntity<String> request = new HttpEntity<>(headers);
-        ResponseEntity<String> response = new RestTemplate().exchange(url, HttpMethod.GET, request, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, request, String.class);
         Assertions.assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
         Assertions.assertEquals("unsecured", response.getBody());
     }
@@ -42,7 +40,7 @@ public class ControllerAuthRestTemplateTest {
         try {
             restTemplate.getForEntity("http://localhost:9999/example-application/secured/test", String.class);
         } catch (HttpClientErrorException e) {
-            Assertions.assertEquals(HttpStatusCode.valueOf(401),e.getStatusCode());
+            Assertions.assertEquals(HttpStatusCode.valueOf(401), e.getStatusCode());
         }
     }
 
@@ -50,9 +48,9 @@ public class ControllerAuthRestTemplateTest {
     public void testAuthorizedAccessToSecuredEndpoint() {
         String url = "http://localhost:9999/example-application/secured/test";
         HttpHeaders headers = new HttpHeaders();
-        headers.setBasicAuth("user", "password");
+        headers.setBasicAuth("brom", "password");
         HttpEntity<String> request = new HttpEntity<>(headers);
-        ResponseEntity<String> response = new RestTemplate().exchange(url, HttpMethod.GET, request, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, request, String.class);
         Assertions.assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
         Assertions.assertEquals("secured", response.getBody());
     }

@@ -9,6 +9,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients
 @Slf4j
 public class Main {
+
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
     }
