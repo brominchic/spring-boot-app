@@ -18,7 +18,7 @@ public interface AuthorizedClient {
     class FeignConfig {
         @Bean
         public RequestInterceptor basicAuthRequestInterceptor() {
-            return new BasicAuthRequestInterceptor("brom", "password");
+            return new BasicAuthRequestInterceptor("user", "password");
         }
     }
 }
