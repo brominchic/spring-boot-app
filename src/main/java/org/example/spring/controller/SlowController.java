@@ -14,9 +14,8 @@ import java.util.HashMap;
 public class SlowController {
     private final SlowComponent component;
 
-    @GetMapping("unsecured/slow/test")
+    @GetMapping("/unsecured/slow/test")
     public HashMap<String, String> getAll() throws InterruptedException {
-        Thread.sleep(5000);
         return component.getAll();
     }
 }
