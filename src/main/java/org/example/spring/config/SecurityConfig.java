@@ -25,8 +25,13 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(passwordEncoder());
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(5);
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider(PasswordEncoder encoder) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(encoder);
         provider.setUserDetailsService(userDetailsService);
         return provider;
     }
@@ -34,15 +39,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((auths) -> auths.
-                        requestMatchers("/unsecured/**", "/unsecured/operation/create").
-                        permitAll()).
-                httpBasic(Customizer.withDefaults());
+                requestMatchers("/unsecured/**").permitAll()
+                .anyRequest().authenticated()
+        ).httpBasic(Customizer.withDefaults());
         return http.build();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(5);
     }
 }
 
