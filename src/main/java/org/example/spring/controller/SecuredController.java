@@ -14,16 +14,11 @@ import org.springframework.web.bind.annotation.*;
 public class SecuredController {
 
 
-    private final OperationComponent component;
-
     @GetMapping("/test")
     @PreAuthorize("hasAuthority('user')")
     public String securedTest() {
         return "secured";
     }
 
-    @PostMapping("/operation/create")
-    public void createNewTransaction(@RequestBody OperationCreateDto input) {
-        component.createRow(input.getSum(), input.getCurrency());
-    }
+
 }
