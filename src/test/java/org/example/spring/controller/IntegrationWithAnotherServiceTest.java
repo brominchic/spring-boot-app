@@ -13,6 +13,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -20,7 +22,6 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class IntegrationWithAnotherServiceTest extends SpringBootApplicationTest {
     @LocalServerPort
     private final Integer port = 9999;
@@ -30,6 +31,7 @@ public class IntegrationWithAnotherServiceTest extends SpringBootApplicationTest
     OperationRepository operationRepository;
 
     @Test
+    @Transactional
     public void createRowsWithDataFromSlowService() throws InterruptedException {
         currencyRepository.save(CurrencyEntity.
                 builder().
@@ -58,5 +60,4 @@ public class IntegrationWithAnotherServiceTest extends SpringBootApplicationTest
         operationRepository.findAll().forEach(result::add);
         Assertions.assertEquals(100, result.size());
     }
-
 }

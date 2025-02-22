@@ -17,7 +17,7 @@ public class SlowComponent {
     private final CurrencyRepository repository;
     private final CurrencyMapper mapper;
 
-    public HashMap<String, String> getAll() throws InterruptedException {
+    public HashMap<String, String> getCurrencies() throws InterruptedException {
         Thread.sleep(5000);
         ArrayList<CurrencyDto> dtoList = new ArrayList<>();
         ArrayList<CurrencyEntity> entityList = new ArrayList<>();

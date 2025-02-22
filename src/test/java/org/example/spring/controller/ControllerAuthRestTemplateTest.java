@@ -3,17 +3,12 @@ package org.example.spring.controller;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class ControllerAuthRestTemplateTest extends SpringBootApplicationTest {
-    @LocalServerPort
-    private final Integer port = 9999;
-    
+
     private static RestTemplate restTemplate;
 
     @BeforeAll

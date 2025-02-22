@@ -1,6 +1,7 @@
 package org.example.spring.controller;
 
 import org.example.Application;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -10,9 +11,10 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 /**
  * General class for test containers.
  */
-@SpringBootTest(classes = Application.class)
+@SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @Testcontainers
 @ActiveProfiles("test")
+@AutoConfigureMockMvc
 public class SpringBootApplicationTest {
     private static final String DATABASE_NAME = "spring-app";
 
