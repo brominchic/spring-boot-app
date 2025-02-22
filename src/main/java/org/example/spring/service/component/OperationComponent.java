@@ -15,11 +15,20 @@ public class OperationComponent {
     private final OperationRepository repository;
     private ConcurrentHashMap<String, String> currencies;
 
-    public void createRow(Long sum, String currency) {
+    public void createRowWithCache(Long sum, String currency) {
         if (currencies == null) {
             fillTheMap();
         }
         String code = currencies.get(currency);
+        repository.save(OperationEntity.
+                builder().
+                sum(sum).
+                currencyCode(code)
+                .build());
+    }
+
+    public void createRowWithoutCache(Long sum, String currency) {
+        String code = client.getAll().get(currency);
         repository.save(OperationEntity.
                 builder().
                 sum(sum).

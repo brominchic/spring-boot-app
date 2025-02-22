@@ -30,6 +30,6 @@ public class UnsecuredController {
 
     @PostMapping("/operation/create")
     public void createNewTransaction(@RequestBody OperationCreateDto input) {
-        operationComponent.createRow(input.getSum(), input.getCurrency());
+        operationComponent.createRowWithCache(input.getSum(), input.getCurrency());
     }
 }

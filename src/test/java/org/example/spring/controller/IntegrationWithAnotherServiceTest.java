@@ -6,6 +6,7 @@ import org.example.spring.model.entity.CurrencyEntity;
 import org.example.spring.model.entity.OperationEntity;
 import org.example.spring.repositories.CurrencyRepository;
 import org.example.spring.repositories.OperationRepository;
+import org.example.spring.service.component.OperationComponent;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,8 @@ public class IntegrationWithAnotherServiceTest extends SpringBootApplicationTest
     OperationRepository operationRepository;
     @Autowired
     private UnauthorizedClient unauthorizedClient;
+    @Autowired
+    private OperationComponent component;
 
     @BeforeEach
     void setUp() {
@@ -58,7 +61,7 @@ public class IntegrationWithAnotherServiceTest extends SpringBootApplicationTest
     }
 
     @Test
-    public void createRowsWithDataFromSlowService() throws InterruptedException {
+    public void createRowsWithDataFromSlowService() {
         String uploadUrl = "http://localhost:" + port + "/example-application/unsecured/operation/create";
         RestTemplate restTemplate = new RestTemplate();
         for (int i = 0; i < 100; i++) {
@@ -73,6 +76,32 @@ public class IntegrationWithAnotherServiceTest extends SpringBootApplicationTest
         List<OperationEntity> result = new ArrayList<>();
         operationRepository.findAll().forEach(result::add);
         assertEquals(100, result.size());
+    }
+
+    @Test
+    public void inTimeWithCache() {
+        Long firstTime = System.currentTimeMillis();
+        for (int i = 0; i < 100; i++) {
+            component.createRowWithCache(1L, "rub");
+        }
+        Long secondTime = System.currentTimeMillis();
+        List<OperationEntity> result = new ArrayList<>();
+        operationRepository.findAll().forEach(result::add);
+        assertEquals(100, result.size());
+        assert (secondTime - firstTime < 10000);
+    }
+
+    @Test
+    public void notInTimeWithoutCache() {
+        Long firstTime = System.currentTimeMillis();
+        for (int i = 0; i < 100; i++) {
+            component.createRowWithoutCache(1L, "rub");
+        }
+        Long secondTime = System.currentTimeMillis();
+        List<OperationEntity> result = new ArrayList<>();
+        operationRepository.findAll().forEach(result::add);
+        assertEquals(100, result.size());
+        assert (secondTime - firstTime > 10000);
     }
 
     @Test
