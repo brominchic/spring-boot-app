@@ -7,12 +7,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.cloud.openfeign.EnableFeignClients;
-import org.springframework.http.HttpStatusCode;
 
-@SpringBootTest
-@EnableFeignClients
-public class ControllerAuthFeignTest {
+
+public class ControllerAuthFeignTest extends SpringBootApplicationTest {
     @Autowired
     private AuthorizedClient authorizedClient;
     @Autowired
