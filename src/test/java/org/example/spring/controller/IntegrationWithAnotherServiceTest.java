@@ -38,7 +38,6 @@ public class IntegrationWithAnotherServiceTest extends SpringBootApplicationTest
 
     @BeforeEach
     void setUp() {
-
         currencyRepository.save(CurrencyEntity.
                 builder().
                 id(1L).
