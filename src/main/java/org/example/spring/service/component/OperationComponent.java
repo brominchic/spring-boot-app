@@ -1,25 +1,31 @@
 package org.example.spring.service.component;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.RequiredArgsConstructor;
 import org.example.spring.clients.CurrencyClient;
 import org.example.spring.model.entity.OperationEntity;
 import org.example.spring.repositories.OperationRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 @Component
 @RequiredArgsConstructor
 public class OperationComponent {
     private final CurrencyClient client;
     private final OperationRepository repository;
-    private ConcurrentHashMap<String, String> currencies;
+    private final Cache<String, String> currencies = Caffeine.newBuilder()
+            .expireAfterWrite(1, TimeUnit.MINUTES)
+            .maximumSize(100)
+            .build();
 
     public void createRowWithCache(Long sum, String currency) {
-        if (currencies == null) {
+        if (currencies.asMap().isEmpty()) {
             fillTheMap();
         }
-        String code = currencies.get(currency);
+        String code = currencies.getIfPresent(currency);
         repository.save(OperationEntity.
                 builder().
                 sum(sum).
@@ -37,6 +43,10 @@ public class OperationComponent {
     }
 
     private void fillTheMap() {
-        currencies = new ConcurrentHashMap<>(client.getAll());
+        currencies.cleanUp();
+        HashMap<String, String> data = client.getAll();
+        for (HashMap.Entry<String, String> str : data.entrySet()) {
+            currencies.put(str.getKey(), str.getValue());
+        }
     }
 }

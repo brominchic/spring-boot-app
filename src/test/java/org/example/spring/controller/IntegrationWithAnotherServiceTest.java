@@ -59,7 +59,7 @@ public class IntegrationWithAnotherServiceTest extends SpringBootApplicationTest
     }
 
     @Test
-    @Disabled // тимур, проверь! не починил
+    @Disabled
     public void createRowsWithDataFromSlowService() {
         String uploadUrl = "http://localhost:" + port + "/example-application/unsecured/operation/create";
         RestTemplate restTemplate = new RestTemplate();
