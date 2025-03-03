@@ -3,7 +3,7 @@ package org.example.spring.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.spring.model.dto.OperationCreateDto;
-import org.example.spring.service.component.OperationComponent;
+import org.example.spring.service.component.OperationManualCacheComponent;
 import org.example.spring.service.component.SlowComponent;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +16,7 @@ import java.util.HashMap;
 public class UnsecuredController {
 
     private final SlowComponent currencyComponent;
-    private final OperationComponent operationComponent;
+    private final OperationManualCacheComponent operationComponent;
 
     @GetMapping("/test")
     public String unsecuredTest() {
