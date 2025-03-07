@@ -7,20 +7,15 @@ import org.example.spring.repositories.OperationRepository;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
 
 @Component
 @RequiredArgsConstructor
 public class OperationSpringCacheComponent {
     private final CurrencyClient client;
     private final OperationRepository repository;
-    private final HashMap<String, String> currencies;
 
     public void createRowWithCache(Long sum, String currency) {
-        if (currencies.isEmpty()) {
-            fillTheMap();
-        }
-        String code = currencies.get(currency);
+        String code = getCurrencyCode(currency);
         repository.save(OperationEntity.
                 builder().
                 sum(sum).
@@ -28,10 +23,8 @@ public class OperationSpringCacheComponent {
                 .build());
     }
 
-    @Cacheable
-    private void fillTheMap() {
-        currencies.clear();
-        HashMap<String, String> data = client.getAll();
-        currencies.putAll(data);
+    @Cacheable(cacheNames = "codes", key = "#currency")
+    private String getCurrencyCode(String currency) {
+        return client.getAll().get(currency);
     }
 }
