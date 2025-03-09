@@ -10,4 +10,6 @@ public interface CurrencyClient {
 
     @GetMapping(value = "unsecured/slow/test")
     HashMap<String, String> getAll();
+
+
 }
