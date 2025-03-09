@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class CurrencyCachedComponent {
     private final CurrencyClient client;
 
-    @Cacheable(cacheNames = "codes")
+    @Cacheable(cacheManager = "caffeineManager", cacheNames = "codes")
     String getCurrencyCode(String currency) {
         return client.getAll().get(currency);
     }

@@ -10,7 +10,6 @@ import org.example.spring.service.component.OperationManualCacheComponent;
 import org.example.spring.service.component.OperationSpringCacheComponent;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -62,7 +61,6 @@ public class IntegrationWithAnotherServiceTest extends SpringBootApplicationTest
     }
 
     @Test
-    @Disabled
     public void createRowsWithDataFromSlowService() {
         String uploadUrl = "http://localhost:" + port + "/example-application/unsecured/operation/create";
         RestTemplate restTemplate = new RestTemplate();
