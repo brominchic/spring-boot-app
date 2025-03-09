@@ -14,8 +14,7 @@ public class OperationSpringCacheComponent {
 
     public void createRowWithCache(Long sum, String currency) {
         String code = component.getCurrencyCode(currency);
-        repository.save(OperationEntity
-                .builder()
+        repository.save(OperationEntity.builder()
                 .sum(sum)
                 .currencyCode(code)
                 .build());
