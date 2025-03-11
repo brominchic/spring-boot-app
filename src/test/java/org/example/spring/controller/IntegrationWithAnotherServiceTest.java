@@ -93,10 +93,23 @@ public class IntegrationWithAnotherServiceTest extends SpringBootApplicationTest
     }
 
     @Test
-    public void inTimeWithSpringCache() {
+    public void inTimeWithSpringCacheFromComponent() {
         Long firstTime = System.currentTimeMillis();
         for (int i = 0; i < 100; i++) {
-            operationSpringCacheComponent.createRowWithCache(1L, "rub");
+            operationSpringCacheComponent.createRowWithCacheFromComponent(1L, "rub");
+        }
+        Long secondTime = System.currentTimeMillis();
+        List<OperationEntity> result = new ArrayList<>();
+        operationRepository.findAll().forEach(result::add);
+        assertEquals(100, result.size());
+        assert (secondTime - firstTime < 10000);
+    }
+
+    @Test
+    public void inTimeWithSpringCacheFromClient() {
+        Long firstTime = System.currentTimeMillis();
+        for (int i = 0; i < 100; i++) {
+            operationSpringCacheComponent.createRowWithCacheFromClient(1L, "rub");
         }
         Long secondTime = System.currentTimeMillis();
         List<OperationEntity> result = new ArrayList<>();
