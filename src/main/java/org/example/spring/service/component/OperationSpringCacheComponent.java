@@ -11,16 +11,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class OperationSpringCacheComponent {
     private final OperationRepository repository;
-    private final CurrencyCachedComponent component;
     private final CurrencyCachedClient client;
-
-    public void createRowWithCacheFromComponent(Long sum, String currency) {
-        String code = component.getCurrencyCode(currency);
-        repository.save(OperationEntity.builder()
-                .sum(sum)
-                .currencyCode(code)
-                .build());
-    }
 
     public void createRowWithCacheFromClient(Long sum, String currency) {
         String code = client.getAll().get(currency);
