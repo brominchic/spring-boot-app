@@ -2,20 +2,24 @@ package org.example.spring.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.FileInputStream;
 import java.util.Objects;
 import java.util.Properties;
 
-
 @Controller
-public class UiController {
+@EnableMethodSecurity
+@RequestMapping("/preauthorized")
+public class PreAuthorizedUiController {
     @GetMapping("/")
     public String getIndex(Model model, Authentication auth) {
         model.addAttribute("name",
@@ -33,6 +37,7 @@ public class UiController {
     }
 
     @GetMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
     public String getNice(Model model, Authentication auth) {
         return "nice.html";
     }
