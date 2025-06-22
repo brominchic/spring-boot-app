@@ -2,11 +2,25 @@ server:
   port: 9999
   servlet:
     context-path: /example-application
+
 spring:
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yaml
   security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            provider: brom-keycloak
+            issuer-uri: http://localhost:8080/realms/brom-realm
+            authorization-grant-type: authorization_code
+            client-id: brom-keycloak-confidential
+            client-secret: secret
+            scope: openid
+        provider:
+          brom-keycloak:
+            issuer-uri: http://localhost:8080/realms/brom-keycloak
     user:
       name: user
       password: password
